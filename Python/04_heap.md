@@ -71,3 +71,75 @@ print(heap)
 힙에 원소를 추가할 때 `(-item, item)`의 튜플 형태로 넣어주면 튜플의 첫 번째 원소를 우선순위로 힙을 구성하게 된다.   
 
 이때 원소 값의 부호를 바꿨기 때문에 최소 힙으로 구현된 `heapq` 모듈을 최대 힙 구현에 활용할 수 있다.
+
+아래 예시는 `heap_items`에 있는 원소들을 `max_heap`이라는 최대 힙 자료구조로 만드는 코드 예시
+
+```python
+heap_items = [1, 3, 5, 7, 9]
+
+max_heap = []
+for item in heap_items:
+    heapq.heappush(max_heap, (-item, item))
+
+print(max_heap)
+
+>> [(-9, 9), (-7, 7), (-3, 3), (-1, 1), (-5, 5)]
+```
+
+`heappush` 함수를 통해 `item`을 힙에 push 할 때 (-item, item)의 튜플 형태로 넣은 것을 확인할 수 있음
+
+그 결과, `heappop`을 사용하게 되면 힙에 있는 **최댓값**이 반환되는 것을 확인할 수 있다. 이때 실제 원소 값은 튜플의 두 번째 자리에 저장되어 있으므로 `[1]` 인덱싱을 통해 접근하면 됨
+
+```python
+max_item = heapq.heappop(max_heap)[1]  # (-9, 9) 중 9를 추출
+print(max_item)
+
+>> 9
+```
+
+### [예제] 주어진 리스트의 모든 값이 T 이상이 될 때까지 최솟값 두 개를 합치기
+N개의 비커에 액체가 담겨 있다. 모든 비커에 있는 액체의 양이 T 이상이 될 때까지 **액체가 가장 적게 담긴 두 비커의 액체를 합쳐**가려 한다. 각 비커에 담겨있는 액체의 양을 표기한 리스트 L과 기준 T가 주어질 때, 모든 비커의 양이 T 이상이 될 때까지 필요한 작업 횟수를 리턴하는 함수를 구현해보자. (합쳐지지 않을 경우 -1을 리턴)
+
+```python 
+T = 4
+L = [1, 2, 3, 4, 5, 6, 7]
+
+import heapq
+
+def heap_example(L, T):
+    heapq.heapify(L)  # 리스트를 힙 구조로 변환
+
+    result = 0
+
+    while len(L) >= 2:  # IndexError 방지
+        min_ = heapq.heappop(L)  # 힙에서 최솟값을 가져옴
+
+        # 최솟값이 T보다 크다면 더 이상 합쳐질게 없으니 -1을 리턴
+        if min_ >= T:
+            result = -1
+            return result
+
+        else:
+            min_2 = heapq.heappop(L)  # 두번째로 작은 값을 가져와 합친 값을 힙에 push
+            heapq.heappush(L, min_ + min_2)
+            result += 1  # 합친 횟수 +1
+
+    # 합친 후 T보다 크면 합친횟수를 리턴, 그렇지 않으면 -1를 리턴
+    if L[0] > T:
+        return result
+    else:
+        return -1
+```
+
+```python
+T = 4
+L = [1, 2, 3, 4, 5, 6, 7]
+
+step1 : [1, 2]를 합침
+        -> [3, 3, 4, 5, 6, 7]
+
+step2 : [3, 3]을 합침
+        -> [6, 4, 5, 6, 7]
+
+모든 비커의 액체 양이 4 이상이므로 STOP
+```
