@@ -114,8 +114,7 @@ def heap_example(L, T):
 
         # 최솟값이 T보다 크다면 더 이상 합쳐질게 없으니 -1을 리턴
         if min_ >= T:
-            result = -1
-            return result
+            break
 
         else:
             min_2 = heapq.heappop(L)  # 두번째로 작은 값을 가져와 합친 값을 힙에 push
