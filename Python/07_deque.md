@@ -1,5 +1,5 @@
 # deque
-`collections` 모듈에 있는 `deque` 클래스는 **이중 연결 리스트(double-ended queue)**로 구현된 자료구조이다.
+`collections` 모듈에 있는 `deque` 클래스는 **이중 연결 리스트(double-ended queue)** 로 구현된 자료구조이다.
 
 이 구조는 양쪽 끝에서의 삽입과 삭제가 빠르고 유연하다.
 
